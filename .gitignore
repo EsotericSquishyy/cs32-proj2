@@ -1,0 +1,10 @@
+._*
+*.gch
+*.exe
+*.o
+*.out
+*.nfs*
+output
+*._.
+.vscode/*
+.vscode
