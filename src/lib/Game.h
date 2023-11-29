@@ -12,8 +12,10 @@ class Game {
     
     public:
                 Game();
-        Player* player;
-        std::vector<Enemy*> enemies;
+        void    updatePlay();
+        void    drawPlay();
+        Player* mPlayer;
+        std::vector<Enemy*> mEnemies;
     private:
         void spawnEnemies(size_t count);
 };

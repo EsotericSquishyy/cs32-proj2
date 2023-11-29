@@ -3,8 +3,23 @@
 
 
 Game::Game(){
-    player = new Player(0,0);
+    mPlayer = new Player(0,0);
     spawnEnemies(10);
+}
+
+
+
+void Game::drawPlay(){
+    mPlayer->drawObj();
+    for(size_t i = 0; i < mEnemies.size(); i++){
+        mEnemies[i]->drawObj();
+    }
+}
+
+
+
+void Game::updatePlay(){
+    // Implementation for updating all objects in game
 }
 
 
@@ -27,7 +42,7 @@ void Game::spawnEnemies(size_t count){
         else{
             cEnemy = new Enemy(-0.8f, 1.0f - (r - 6.0f));
         }
-        enemies.push_back(cEnemy);
+        mEnemies.push_back(cEnemy);
     }
 }
 

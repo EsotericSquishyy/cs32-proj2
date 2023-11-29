@@ -37,26 +37,13 @@ int main(int argc, char** argv) {
 
 
 
-void drawPlayer(){
-}
-
-
-
-void updatePlay(){
-    //gameManager->updatePlayer();
-    //gameManager->updateEnemies();
-}
-
 
 void display() {
     // Resets the frame bugger (defualt color is black)
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity(); // Resets coordinates
 
-    gameManager->player->drawObj();
-    for(size_t i = 0; i < gameManager->enemies.size(); i++){
-        gameManager->enemies[i]->drawObj();
-    }
+    gameManager->drawPlay();
 
     // Swaps Front and Back buffer
     glutSwapBuffers();
@@ -66,7 +53,7 @@ void display() {
 
 
 void timer(int){
-    updatePlay();
+    gameManager->updatePlay();
 
     // Will recall glutDisplayFunc()
     glutPostRedisplay();
