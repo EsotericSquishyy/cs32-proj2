@@ -11,14 +11,19 @@ GLFLAGS = -lGL -lGLU -lglut
 # #  $< is the first dependency
 
 
-Game: game.o
+Prog: main.o Game.o Entity.o
 	g++ $(CXXFLAGS) $+ -o $@ $(GLFLAGS)
 
 
-game.o: game.cpp
+main.o: main.cpp
+	g++ $(CXXFLAGS) -c $<
+
+Game.o: lib/Game.cpp lib/Game.h
+	g++ $(CXXFLAGS) -c $<
+
+Entity.o: lib/Entity.cpp lib/Entity.h
 	g++ $(CXXFLAGS) -c $<
 
 
-
 clean:
-	rm *.o lib/*.gch Game
+	rm *.o lib/*.gch Prog
