@@ -3,54 +3,77 @@
 #include "lib/Game.h"
 
 
-void initPlay(){
-    // Player player = new Player();
-}
-
-
-
-void drawArena(){
-    glBegin(GL_POLYGON);
-        glColor3f(1, 0, 0); glVertex3f(-.5, -0.5, 0);
-        glColor3f(1, 0, 0); glVertex3f(-.5, .5, 0);
-        glColor3f(0, 1, 0); glVertex3f(0.5, .5, 0);
-        glColor3f(0, 0, 1); glVertex3f(0.5, -.5, 0);
-    glEnd();
-}
-
-
-
-void display() {
-    // Set every pixel in the frame buffer to the current clear color.
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    drawArena();
-
-    // Flush drawing command buffer to make drawing happen as soon as possible.
-    glFlush();
-}
-
-
+void display();
+void timer(int);
+Game* gameManager;
 
 int main(int argc, char** argv) {
 
-    // Use a single buffered window in RGB mode (as opposed to a double-buffered
-    // window or color-index mode).
+    // Initializes glut
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    // Front (displayed) and Back buffer
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 
-    // Position window at (80,80)-(480,380) and give it a title.
+    // Setup of window
     glutInitWindowPosition(80, 80);
     glutInitWindowSize(600, 600);
-    glutCreateWindow("A Simple Triangle");
+    glutCreateWindow("Colosseum Game");
 
-    // Tell GLUT that whenever the main window needs to be repainted that it
-    // should call the function display().
+    // Set default buffer color
+    glClearColor(0,0,0,1);
+
+    gameManager = new Game();
+
+    // Calls display when window needs to be repainted
     glutDisplayFunc(display);
+    glutTimerFunc(1000/30, timer, 0);
 
-    // Tell GLUT to start reading and processing events.  This function
-    // never returns; the program only exits when the user closes the main
-    // window or kills the process.
+    // Processes events and doesn't return until program is manually exited
     glutMainLoop();
 }
+
+
+
+
+
+
+void drawPlayer(){
+}
+
+
+
+void updatePlay(){
+    //gameManager->updatePlayer();
+    //gameManager->updateEnemies();
+}
+
+
+void display() {
+    // Resets the frame bugger (defualt color is black)
+    glClear(GL_COLOR_BUFFER_BIT);
+    glLoadIdentity(); // Resets coordinates
+
+    gameManager->player->drawObj();
+    for(size_t i = 0; i < gameManager->enemies.size(); i++){
+        gameManager->enemies[i]->drawObj();
+    }
+
+    // Swaps Front and Back buffer
+    glutSwapBuffers();
+    // glFlush();
+}
+
+
+
+void timer(int){
+    updatePlay();
+
+    // Will recall glutDisplayFunc()
+    glutPostRedisplay();
+
+    // Calls next frame
+    glutTimerFunc(1000/30,timer,0);
+}
+
+
 
