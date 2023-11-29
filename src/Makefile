@@ -1,5 +1,6 @@
 CXXFLAGS = -Wall -Wextra -std=c++17 -Wno-unused-parameter
 GLFLAGS = -lGL -lGLU -lglut
+BREWFLAGS = -I/opt/homebrew/include -L/opt/homebrew/lib
 
 
 # Won't make new files
@@ -12,7 +13,7 @@ GLFLAGS = -lGL -lGLU -lglut
 
 
 Prog: main.o Game.o Entity.o
-	g++ $(CXXFLAGS) $+ -o $@ $(GLFLAGS)
+	g++ $(CXXFLAGS) $+ -o $@ $(BREWFLAGS) $(GLFLAGS)
 
 
 main.o: main.cpp
