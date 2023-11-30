@@ -6,7 +6,10 @@
 #include <random>
 #include <ctime>
 #include <iostream>
+#include <map>
 
+
+const int INIT_ENEMIES = 10; // Initial enemy count
 
 class Game {
     
@@ -14,10 +17,20 @@ class Game {
                 Game();
         void    updatePlay();
         void    drawPlay();
+        std::map<unsigned char, bool> pressedKeys {
+            {'w', false}, // Move up
+            {'a', false}, // Move left
+            {'s', false}, // Move down
+            {'d', false}, // Move right
+            {'q', false}, // Rotate left
+            {'e', false}, // Rotate right
+            {' ', false}, // Shoot (NOT IMPLEMENTED)
+        };
+
+    private:
+        void    spawnEnemies(size_t count);
         Player* mPlayer;
         std::vector<Enemy*> mEnemies;
-    private:
-        void spawnEnemies(size_t count);
 };
 
 

@@ -4,7 +4,7 @@
 
 Game::Game(){
     mPlayer = new Player(0,0);
-    spawnEnemies(10);
+    spawnEnemies(INIT_ENEMIES);
 }
 
 
@@ -20,6 +20,28 @@ void Game::drawPlay(){
 
 void Game::updatePlay(){
     // Implementation for updating all objects in game
+    if(pressedKeys['w']){
+        mPlayer->mY += PLAYER_SPEED;
+    }
+    if(pressedKeys['s']){
+        mPlayer->mY -= PLAYER_SPEED;
+    }
+    if(pressedKeys['a']){
+        mPlayer->mX -= PLAYER_SPEED;
+    }
+    if(pressedKeys['d']){
+        mPlayer->mX += PLAYER_SPEED;
+    }
+    if(pressedKeys['q']){
+        pressedKeys['q'] = false;
+        mPlayer->rotState = (((mPlayer->rotState + 1) % 4) + 4) % 4;
+        std::cout << "Changed rotState to: " << mPlayer->rotState << std::endl;
+    }
+    if(pressedKeys['e']){
+        pressedKeys['e'] = false;
+        mPlayer->rotState = (((mPlayer->rotState - 1) % 4) + 4) % 4;
+        std::cout << "Changed rotState to: " << mPlayer->rotState << std::endl;
+    }
 }
 
 

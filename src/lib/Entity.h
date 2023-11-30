@@ -6,6 +6,13 @@
 #include <iostream>
 
 
+const float PLAYER_SPEED = 0.02f; // Speed of player
+const float PLAYER_SIZE  = 0.05f;  // Half the width of the player
+const float WEAPON_MULT  = 1.5f;  // Relative length of weapon
+
+const float ENEMY_SPEED  = 0.01f; // Speed of enemy
+const float ENEMY_SIZE   = 0.05f;  // Half the width of the enemy
+
 class Entity {
     public:
         virtual void    drawObj() = 0;
@@ -19,8 +26,11 @@ class Player : public Entity {
     public:
                         Player(float x, float y);
         virtual void    drawObj();
+        int     rotState = 0; // mod 4, 0 up, 1 left, 2 down, 3 right
     private:
-        double health;
+        void    drawWeapon();
+        void    drawProjectiles();
+        double  health;
 };
 
 
