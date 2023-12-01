@@ -16,10 +16,8 @@ void Game::drawPlay(){
     }
 }
 
+void Game::movePlayer(){
 
-
-void Game::updatePlay(){
-    // Implementation for updating all objects in game
     if(pressedKeys['w']){
         mPlayer->mY += PLAYER_SPEED;
     }
@@ -42,6 +40,27 @@ void Game::updatePlay(){
         mPlayer->rotState = (((mPlayer->rotState - 1) % 4) + 4) % 4;
         std::cout << "Changed rotState to: " << mPlayer->rotState << std::endl;
     }
+
+}
+
+void Game::moveEnemies(){
+    float movemultiplier;
+    float moveX;
+    float moveY;
+    for (int i = 0; i<int(mEnemies.size()); i++){
+        moveX = mEnemies[i]->mX - mPlayer->mX;
+        moveY = mEnemies[i]->mY - mPlayer->mY;
+        movemultiplier = sqrt(pow(moveX, 2) + pow(moveY, 2));
+        movemultiplier = ENEMY_SPEED/movemultiplier;
+        mEnemies[i]->mX -= moveX*movemultiplier;
+        mEnemies[i]->mY -= moveY*movemultiplier;
+    }
+}
+
+void Game::updatePlay(){
+    // Implementation for updating all objects in game
+    movePlayer();
+    moveEnemies();
 }
 
 
