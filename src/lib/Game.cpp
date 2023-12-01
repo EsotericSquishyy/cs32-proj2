@@ -33,12 +33,10 @@ void Game::movePlayer(){
     if(pressedKeys['q']){
         pressedKeys['q'] = false;
         mPlayer->rotState = (((mPlayer->rotState + 1) % 4) + 4) % 4;
-        std::cout << "Changed rotState to: " << mPlayer->rotState << std::endl;
     }
     if(pressedKeys['e']){
         pressedKeys['e'] = false;
         mPlayer->rotState = (((mPlayer->rotState - 1) % 4) + 4) % 4;
-        std::cout << "Changed rotState to: " << mPlayer->rotState << std::endl;
     }
 
 }
