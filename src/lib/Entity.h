@@ -4,6 +4,7 @@
 #include <GL/glut.h>
 #include <GL/gl.h>
 #include <iostream>
+#include <cmath>
 
 
 const float PLAYER_SPEED = 0.02f; // Speed of player
@@ -26,7 +27,8 @@ class Player : public Entity {
     public:
                         Player(float x, float y);
         virtual void    drawObj();
-        int     rotState = 0; // mod 4, 0 up, 1 left, 2 down, 3 right
+        int             rotState = 0; // mod 4, 0 up, 1 left, 2 down, 3 right
+
     private:
         void    drawWeapon();
         void    drawProjectiles();
