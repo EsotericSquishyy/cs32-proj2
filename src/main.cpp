@@ -3,7 +3,14 @@
 #include "lib/Game.h"
 
 
+const unsigned int DELTA_TIME   = 1000/30; // Time in ms between updates
+const int WIDTH                 = 600;     // Window width
+const int HEIGHT                = 600;     // Window height
+
+
 void display();
+void keyDown(unsigned char key, int x, int y);
+void keyUp(unsigned char key, int x, int y);
 void timer(int);
 Game* gameManager;
 
@@ -16,7 +23,7 @@ int main(int argc, char** argv) {
 
     // Setup of window
     glutInitWindowPosition(80, 80);
-    glutInitWindowSize(600, 600);
+    glutInitWindowSize(WIDTH, HEIGHT);
     glutCreateWindow("Colosseum Game");
 
     // Set default buffer color
@@ -26,7 +33,9 @@ int main(int argc, char** argv) {
 
     // Calls display when window needs to be repainted
     glutDisplayFunc(display);
-    glutTimerFunc(1000/30, timer, 0);
+    glutKeyboardFunc(keyDown);
+    glutKeyboardUpFunc(keyUp);
+    glutTimerFunc(DELTA_TIME, timer, 0);
 
     // Processes events and doesn't return until program is manually exited
     glutMainLoop();
@@ -52,6 +61,40 @@ void display() {
 
 
 
+void keyDown(unsigned char key, int x, int y){
+    switch(key){
+        case 'w':
+        case 'a':
+        case 's':
+        case 'd':
+        case 'q':
+        case 'e':
+        case ' ':
+            gameManager->pressedKeys[key] = true;
+            break;
+        default:
+            break;
+    }
+}
+
+
+
+void keyUp(unsigned char key, int x, int y){
+    switch(key){
+        case 'w':
+        case 'a':
+        case 's':
+        case 'd':
+        case ' ':
+            gameManager->pressedKeys[key] = false;
+            break;
+        default:
+            break;
+    }
+}
+
+
+
 void timer(int){
     gameManager->updatePlay();
 
@@ -59,7 +102,7 @@ void timer(int){
     glutPostRedisplay();
 
     // Calls next frame
-    glutTimerFunc(1000/30,timer,0);
+    glutTimerFunc(DELTA_TIME,timer,0);
 }
 
 
