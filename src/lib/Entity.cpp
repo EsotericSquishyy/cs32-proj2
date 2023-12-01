@@ -62,7 +62,6 @@ void Player::drawWeapon(){
 }
 
 
-
 void Player::drawProjectiles(){
     // Implemented in later checkpoint
 }
