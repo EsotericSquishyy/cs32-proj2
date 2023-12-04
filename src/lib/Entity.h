@@ -32,6 +32,7 @@ class Player : public Entity {
         void            moveforward();
         void            moveback();
     private:
+        void    drawBody();
         void    drawWeapon();
         void    drawProjectiles();
         double  health;

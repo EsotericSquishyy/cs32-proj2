@@ -16,8 +16,9 @@ void Game::drawPlay(){
     }
 }
 
-void Game::movePlayer(){
 
+
+void Game::movePlayer(){
     if(pressedKeys['w']){
         mPlayer->moveforward();
     }
@@ -33,6 +34,8 @@ void Game::movePlayer(){
 
 }
 
+
+
 void Game::moveEnemies(){
     float movemultiplier;
     float moveX;
@@ -47,10 +50,17 @@ void Game::moveEnemies(){
     }
 }
 
+
+
 void Game::updatePlay(){
     // Implementation for updating all objects in game
     movePlayer();
     moveEnemies();
+
+    // updatePlayer();
+    // updateEnemies();
+
+    // killEntities();
 }
 
 
