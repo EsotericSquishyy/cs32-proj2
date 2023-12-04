@@ -27,8 +27,9 @@ class Player : public Entity {
     public:
                         Player(float x, float y);
         virtual void    drawObj();
-        int             rotState = 0; // mod 4, 0 up, 1 left, 2 down, 3 right
-
+        double          rotState = 0; // mod 4, 0 up, 1 left, 2 down, 3 right
+        void            moveforward();
+        void            moveback();
     private:
         void    drawWeapon();
         void    drawProjectiles();
