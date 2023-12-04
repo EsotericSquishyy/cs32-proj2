@@ -5,6 +5,7 @@
 Player::Player(float x, float y){
    mX = x;
    mY = y;
+   rotState = M_PI/2;
 }
 
 
@@ -25,6 +26,8 @@ void Player::drawObj(){
 
 
 void Player::drawWeapon(){
+    // must be updated treating rotstate is a 360 degree double rather than 4 state int
+    /*
     switch(rotState){
         case 0:
             glBegin(GL_TRIANGLES);
@@ -59,8 +62,19 @@ void Player::drawWeapon(){
             glEnd();
             break;
     }
+    */
 }
 
+void Player::moveforward(){
+    
+    this->mX += PLAYER_SPEED*cos(rotState);
+    this->mY += PLAYER_SPEED*sin(rotState);
+}
+void Player::moveback(){
+
+    this->mX -= PLAYER_SPEED*cos(rotState);
+    this->mY -= PLAYER_SPEED*sin(rotState);
+}
 
 void Player::drawProjectiles(){
     // Implemented in later checkpoint

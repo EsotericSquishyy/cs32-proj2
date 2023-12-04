@@ -19,24 +19,16 @@ void Game::drawPlay(){
 void Game::movePlayer(){
 
     if(pressedKeys['w']){
-        mPlayer->mY += PLAYER_SPEED;
+        mPlayer->moveforward();
     }
     if(pressedKeys['s']){
-        mPlayer->mY -= PLAYER_SPEED;
+        mPlayer->moveback();
     }
     if(pressedKeys['a']){
-        mPlayer->mX -= PLAYER_SPEED;
+        mPlayer->rotState = fmod(mPlayer->rotState + .02*2*M_PI, 2*M_PI);
     }
     if(pressedKeys['d']){
-        mPlayer->mX += PLAYER_SPEED;
-    }
-    if(pressedKeys['q']){
-        pressedKeys['q'] = false;
-        mPlayer->rotState = (((mPlayer->rotState + 1) % 4) + 4) % 4;
-    }
-    if(pressedKeys['e']){
-        pressedKeys['e'] = false;
-        mPlayer->rotState = (((mPlayer->rotState - 1) % 4) + 4) % 4;
+        mPlayer->rotState = fmod(mPlayer->rotState + .98*2*M_PI, 2*M_PI);
     }
 
 }
