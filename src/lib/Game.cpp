@@ -20,16 +20,16 @@ void Game::drawPlay(){
 
 void Game::movePlayer(){
     if(pressedKeys['w']){
-        mPlayer->moveforward();
+        mPlayer->moveForward();
     }
     if(pressedKeys['s']){
-        mPlayer->moveback();
+        mPlayer->moveBack();
     }
     if(pressedKeys['a']){
-        mPlayer->rotState = fmod(mPlayer->rotState + .02*2*M_PI, 2*M_PI);
+        mPlayer->rotState = fmod(mPlayer->rotState + PLAYER_ROTSPD*2*M_PI + 2*M_PI, 2*M_PI);
     }
     if(pressedKeys['d']){
-        mPlayer->rotState = fmod(mPlayer->rotState + .98*2*M_PI, 2*M_PI);
+        mPlayer->rotState = fmod(mPlayer->rotState - PLAYER_ROTSPD*2*M_PI + 2*M_PI, 2*M_PI);
     }
 
 }
@@ -37,30 +37,51 @@ void Game::movePlayer(){
 
 
 void Game::moveEnemies(){
-    float movemultiplier;
-    float moveX;
-    float moveY;
+    //float movemultiplier;
+    //float moveX;
+    //float moveY;
     for (int i = 0; i<int(mEnemies.size()); i++){
-        moveX = mEnemies[i]->mX - mPlayer->mX;
-        moveY = mEnemies[i]->mY - mPlayer->mY;
-        movemultiplier = sqrt(pow(moveX, 2) + pow(moveY, 2));
-        movemultiplier = ENEMY_SPEED/movemultiplier;
-        mEnemies[i]->mX -= moveX*movemultiplier;
-        mEnemies[i]->mY -= moveY*movemultiplier;
+        float xDisp = mPlayer->mX - mEnemies[i]->mX;
+        float yDisp = mPlayer->mY - mEnemies[i]->mY;
+        float angle = 0;
+        if(xDisp > 0){
+            angle = std::atan(yDisp / xDisp);
+        } else {
+            angle = M_PI + std::atan(yDisp / xDisp);
+        }
+        mEnemies[i]->rotState = fmod(angle + 2*M_PI, 2*M_PI);
+        mEnemies[i]->moveForward();
+
+        //moveX = mEnemies[i]->mX - mPlayer->mX;
+        //moveY = mEnemies[i]->mY - mPlayer->mY;
+        //movemultiplier = sqrt(pow(moveX, 2) + pow(moveY, 2));
+        //movemultiplier = ENEMY_SPEED/movemultiplier;
+        //mEnemies[i]->mX -= moveX*movemultiplier;
+        //mEnemies[i]->mY -= moveY*movemultiplier;
     }
 }
 
 
 
 void Game::updatePlay(){
-    // Implementation for updating all objects in game
     movePlayer();
     moveEnemies();
 
-    // updatePlayer();
-    // updateEnemies();
+    updateEntities();
+}
 
-    // killEntities();
+
+
+void Game::updateEntities(){
+    mPlayer->attackTime -= DELTA_TIME;
+    if(pressedKeys[' '] && mPlayer->attackTime <= 0.0f){
+        mPlayer->attackTime = PLAYER_ATT; 
+        mPlayer->createProj();
+    }
+
+    // Check if overlapping with enemy
+
+    // Checks if projectile is overlapping with enemy
 }
 
 

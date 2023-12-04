@@ -31,6 +31,7 @@ class Game {
         void    spawnEnemies(size_t count);
         void    movePlayer();
         void    moveEnemies();
+        void    updateEntities();
         Player* mPlayer;
         std::vector<Enemy*> mEnemies;
 };
