@@ -30,6 +30,7 @@ class Game {
     private:
         void    spawnEnemies(size_t count);
         void    movePlayer();
+        void    moveProjs();
         void    moveEnemies();
         void    updateEntities();
         Player* mPlayer;

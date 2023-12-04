@@ -3,7 +3,7 @@
 
 
 Game::Game(){
-    mPlayer = new Player(0,0);
+    mPlayer = new Player(0,0,M_PI/2);
     spawnEnemies(INIT_ENEMIES);
 }
 
@@ -32,14 +32,20 @@ void Game::movePlayer(){
         mPlayer->rotState = fmod(mPlayer->rotState - PLAYER_ROTSPD*2*M_PI + 2*M_PI, 2*M_PI);
     }
 
+    moveProjs();
+}
+
+
+
+void Game::moveProjs(){
+    for(Projectile* cProj : mPlayer->mProjs){
+        cProj->moveForward();
+    }
 }
 
 
 
 void Game::moveEnemies(){
-    //float movemultiplier;
-    //float moveX;
-    //float moveY;
     for (int i = 0; i<int(mEnemies.size()); i++){
         float xDisp = mPlayer->mX - mEnemies[i]->mX;
         float yDisp = mPlayer->mY - mEnemies[i]->mY;
@@ -51,13 +57,6 @@ void Game::moveEnemies(){
         }
         mEnemies[i]->rotState = fmod(angle + 2*M_PI, 2*M_PI);
         mEnemies[i]->moveForward();
-
-        //moveX = mEnemies[i]->mX - mPlayer->mX;
-        //moveY = mEnemies[i]->mY - mPlayer->mY;
-        //movemultiplier = sqrt(pow(moveX, 2) + pow(moveY, 2));
-        //movemultiplier = ENEMY_SPEED/movemultiplier;
-        //mEnemies[i]->mX -= moveX*movemultiplier;
-        //mEnemies[i]->mY -= moveY*movemultiplier;
     }
 }
 
@@ -93,16 +92,16 @@ void Game::spawnEnemies(size_t count){
         Enemy* cEnemy;
 
         if(r >= 0.0f && r <= 2.0f){
-            cEnemy = new Enemy(1.0f - r, 0.8f);
+            cEnemy = new Enemy(1.0f - r, 0.8f, 0);
         }
         else if (r > 2.0f && r <= 4.0f){
-            cEnemy = new Enemy(0.8f, 1.0f - (r - 2.0f));
+            cEnemy = new Enemy(0.8f, 1.0f - (r - 2.0f), 0);
         }
         else if (r > 4.0f && r <= 6.0f){
-            cEnemy = new Enemy(1.0f - (r - 4.0f), -0.8f);
+            cEnemy = new Enemy(1.0f - (r - 4.0f), -0.8f, 0);
         }
         else{
-            cEnemy = new Enemy(-0.8f, 1.0f - (r - 6.0f));
+            cEnemy = new Enemy(-0.8f, 1.0f - (r - 6.0f), 0);
         }
         mEnemies.push_back(cEnemy);
     }

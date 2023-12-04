@@ -8,14 +8,22 @@ void Projectile::moveForward(){
 
 
 
-void Projectile::moveBack(){
-    this->mX -= PROJ_MOVSPD * cos(rotState);
-    this->mY -= PROJ_MOVSPD * sin(rotState);
-}
-
-
-
 void Projectile::drawObj(){
+    glPushMatrix();
+    glTranslatef(mX, mY, 0.0f);
+
+    float degrees = rotState * 180 / M_PI;
+    glRotatef(degrees, 0, 0, 1);
+
+    glBegin(GL_QUADS);
+        glColor3f(0,1,0);
+        glVertex2f(-PROJ_SIZE, -PROJ_SIZE);
+        glVertex2f(PROJ_SIZE, -PROJ_SIZE);
+        glVertex2f(PROJ_SIZE, PROJ_SIZE);
+        glVertex2f(-PROJ_SIZE, PROJ_SIZE);
+    glEnd();
+
+    glPopMatrix();
 }
 
 
@@ -46,9 +54,9 @@ void Player::drawObj(){
 
     drawBody();
     drawWeapon();
-    drawProjectiles();
 
     glPopMatrix();
+    drawProjectiles();
 }
 
 
@@ -85,7 +93,7 @@ void Player::drawProjectiles(){
 
 
 void Player::createProj(){
-    Projectile* cProj = new Projectile(mX, mY);
+    Projectile* cProj = new Projectile(mX, mY, rotState);
     mProjs.insert(cProj);
 }
 

@@ -11,22 +11,22 @@
 
 class Entity {
     public:
-                        Entity(float x, float y): mX(x), mY(y){}
+                        Entity(float x, float y, float rot): mX(x), mY(y), rotState(rot){}
         virtual void    drawObj() = 0;
         virtual void    moveForward() = 0;
         virtual void    moveBack() = 0;
                 float   mX;
                 float   mY;
-                float   rotState    = M_PI/2; // radians
+                float   rotState; // radians
 };
 
 
 
 class Projectile : public Entity {
     public:
-                        Projectile(float x, float y) : Entity(x, y){}
+                        Projectile(float x, float y, float rot) : Entity(x, y, rot){}
         virtual void    moveForward();
-        virtual void    moveBack();
+        virtual void    moveBack(){}
         virtual void    drawObj();
 };
 
@@ -34,7 +34,7 @@ class Projectile : public Entity {
 
 class Player : public Entity {
     public:
-                        Player(float x, float y) : Entity(x, y){}
+                        Player(float x, float y, float rot) : Entity(x, y, rot){}
         virtual void    drawObj();
         virtual void    moveForward();
         virtual void    moveBack();
@@ -52,7 +52,7 @@ class Player : public Entity {
 
 class Enemy : public Entity {
     public:
-                        Enemy(float x, float y) : Entity(x,y){}
+                        Enemy(float x, float y, float rot) : Entity(x, y, rot){}
         virtual void    moveForward();
         virtual void    moveBack();
         virtual void    drawObj();
