@@ -10,63 +10,39 @@ Player::Player(float x, float y){
 
 
 void Player::drawObj(){
+    glPushMatrix();
+    glTranslatef(mX, mY, 0.0f);
+
+    float degrees = rotState * 180 / M_PI;
+    glRotatef(degrees, 0, 0, 1);
     glBegin(GL_QUADS);
         glColor3f(0,1,0);
-        glVertex2f(mX - PLAYER_SIZE, mY - PLAYER_SIZE);
-        glVertex2f(mX + PLAYER_SIZE, mY - PLAYER_SIZE);
-        glVertex2f(mX + PLAYER_SIZE, mY + PLAYER_SIZE);
-        glVertex2f(mX - PLAYER_SIZE, mY + PLAYER_SIZE);
+        glVertex2f(-PLAYER_SIZE, -PLAYER_SIZE);
+        glVertex2f(PLAYER_SIZE, -PLAYER_SIZE);
+        glVertex2f(PLAYER_SIZE, PLAYER_SIZE);
+        glVertex2f(-PLAYER_SIZE, PLAYER_SIZE);
     glEnd();
 
     drawWeapon();
 
     drawProjectiles();
+
+    glPopMatrix();
 }
 
 
 
 void Player::drawWeapon(){
-    // must be updated treating rotstate is a 360 degree double rather than 4 state int
-    /*
-    switch(rotState){
-        case 0:
-            glBegin(GL_TRIANGLES);
-                glColor3f(0.5,1,0);
-                glVertex2f(mX, mY + PLAYER_SIZE * WEAPON_MULT);
-                glVertex2f(mX - PLAYER_SIZE, mY + PLAYER_SIZE);
-                glVertex2f(mX + PLAYER_SIZE, mY + PLAYER_SIZE);
-            glEnd();
-            break;
-        case 1:
-            glBegin(GL_TRIANGLES);
-                glColor3f(0.5,1,0);
-                glVertex2f(mX - PLAYER_SIZE * WEAPON_MULT, mY);
-                glVertex2f(mX - PLAYER_SIZE, mY - PLAYER_SIZE);
-                glVertex2f(mX - PLAYER_SIZE, mY + PLAYER_SIZE);
-            glEnd();
-            break;
-        case 2:
-            glBegin(GL_TRIANGLES);
-                glColor3f(0.5,1,0);
-                glVertex2f(mX, mY - PLAYER_SIZE * WEAPON_MULT);
-                glVertex2f(mX + PLAYER_SIZE, mY - PLAYER_SIZE);
-                glVertex2f(mX - PLAYER_SIZE, mY - PLAYER_SIZE);
-            glEnd();
-            break;
-        case 3:
-            glBegin(GL_TRIANGLES);
-                glColor3f(0.5,1,0);
-                glVertex2f(mX + PLAYER_SIZE * WEAPON_MULT, mY);
-                glVertex2f(mX + PLAYER_SIZE, mY + PLAYER_SIZE);
-                glVertex2f(mX + PLAYER_SIZE, mY - PLAYER_SIZE);
-            glEnd();
-            break;
-    }
-    */
+    glBegin(GL_TRIANGLES);
+        glColor3f(0.5,1,0);
+        glVertex2f(PLAYER_SIZE * WEAPON_MULT, 0);
+        glVertex2f(PLAYER_SIZE, -PLAYER_SIZE);
+        glVertex2f(PLAYER_SIZE, PLAYER_SIZE);
+    glEnd();
 }
 
 void Player::moveforward(){
-    
+
     this->mX += PLAYER_SPEED*cos(rotState);
     this->mY += PLAYER_SPEED*sin(rotState);
 }
