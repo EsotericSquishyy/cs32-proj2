@@ -11,8 +11,8 @@ Game::Game(){
 
 void Game::drawPlay(){
     mPlayer->drawObj();
-    for(size_t i = 0; i < mEnemies.size(); i++){
-        mEnemies[i]->drawObj();
+    for(Enemy* cEnemy : mEnemies){
+        cEnemy->drawObj();
     }
 }
 
@@ -46,17 +46,17 @@ void Game::moveProjs(){
 
 
 void Game::moveEnemies(){
-    for (int i = 0; i<int(mEnemies.size()); i++){
-        float xDisp = mPlayer->mX - mEnemies[i]->mX;
-        float yDisp = mPlayer->mY - mEnemies[i]->mY;
+    for (Enemy* cEnemy : mEnemies){
+        float xDisp = mPlayer->mX - cEnemy->mX;
+        float yDisp = mPlayer->mY - cEnemy->mY;
         float angle = 0;
         if(xDisp > 0){
             angle = std::atan(yDisp / xDisp);
         } else {
             angle = M_PI + std::atan(yDisp / xDisp);
         }
-        mEnemies[i]->rotState = fmod(angle + 2*M_PI, 2*M_PI);
-        mEnemies[i]->moveForward();
+        cEnemy->rotState = fmod(angle + 2*M_PI, 2*M_PI);
+        cEnemy->moveForward();
     }
 }
 
@@ -80,7 +80,29 @@ void Game::updateEntities(){
 
     // Check if overlapping with enemy
 
-    // Checks if projectile is overlapping with enemy
+    // Check if projectile is overlapping with enemy
+
+    killOB();
+}
+
+
+
+void Game::killOB(){
+    if(mPlayer->mX - PLAYER_SIZE > 1 || mPlayer->mX + PLAYER_SIZE < -1 ||
+       mPlayer->mY - PLAYER_SIZE > 1 || mPlayer->mX + PLAYER_SIZE < -1){
+        // Game over function to handle cleanups and endscreen
+        return;
+    }
+
+    // Killing enemies
+
+    for(Projectile* cProj : mPlayer->mProjs){
+        if(cProj->mX - PLAYER_SIZE > 1 || cProj->mX + PLAYER_SIZE < -1 ||
+           cProj->mY - PLAYER_SIZE > 1 || cProj->mX + PLAYER_SIZE < -1){
+            // kill projectile
+            return;
+        }
+    }
 }
 
 
@@ -92,18 +114,18 @@ void Game::spawnEnemies(size_t count){
         Enemy* cEnemy;
 
         if(r >= 0.0f && r <= 2.0f){
-            cEnemy = new Enemy(1.0f - r, 0.8f, 0);
+            cEnemy = new Enemy(1.0f - r, 1.0f, 0);
         }
         else if (r > 2.0f && r <= 4.0f){
-            cEnemy = new Enemy(0.8f, 1.0f - (r - 2.0f), 0);
+            cEnemy = new Enemy(1.0f, 1.0f - (r - 2.0f), 0);
         }
         else if (r > 4.0f && r <= 6.0f){
-            cEnemy = new Enemy(1.0f - (r - 4.0f), -0.8f, 0);
+            cEnemy = new Enemy(1.0f - (r - 4.0f), -1.0f, 0);
         }
         else{
-            cEnemy = new Enemy(-0.8f, 1.0f - (r - 6.0f), 0);
+            cEnemy = new Enemy(-1.0f, 1.0f - (r - 6.0f), 0);
         }
-        mEnemies.push_back(cEnemy);
+        mEnemies.insert(cEnemy);
     }
 }
 

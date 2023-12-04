@@ -32,9 +32,10 @@ class Game {
         void    movePlayer();
         void    moveProjs();
         void    moveEnemies();
+        void    killOB();
         void    updateEntities();
         Player* mPlayer;
-        std::vector<Enemy*> mEnemies;
+        std::set<Enemy*> mEnemies;
 };
 
 
