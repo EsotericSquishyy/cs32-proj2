@@ -78,7 +78,7 @@ void Game::updateEntities(){
         mPlayer->createProj();
     }
 
-    // Check if overlapping with enemy
+    // Check if projectile collides with enemy
     for(auto it1 = mEnemies.begin(); it1 != mEnemies.end();){
         bool    deleted = false;
         Entity* cEnemy = *it1;
@@ -86,11 +86,15 @@ void Game::updateEntities(){
             Entity* cProj = *it2;
 
             if(checkCollide(cEnemy, cProj)){
-                mEnemies.erase(it1++);
-                delete cEnemy;
+                if(--cEnemy->mHealth <= 0){
+                    mEnemies.erase(it1++);
+                    delete cEnemy;
+                }
 
-                mPlayer->mProjs.erase(it2++);
-                delete cProj;
+                if(--cProj->mHealth <= 0){
+                    mPlayer->mProjs.erase(it2++);
+                    delete cProj;
+                }
 
                 deleted = true;
                 break;
@@ -106,6 +110,20 @@ void Game::updateEntities(){
     }
 
     // Check if projectile is overlapping with enemy
+    for(auto it = mEnemies.begin(); it != mEnemies.end();){
+        Entity* cEnemy = *it;
+        if(checkCollide(mPlayer, cEnemy)){
+            if(--mPlayer->mHealth <= 0){
+                endGame();
+            }
+
+            mEnemies.erase(it++);
+            delete cEnemy;
+        }
+        else{
+            ++it;
+        }
+    }
 
     killOB();
 }
@@ -184,7 +202,7 @@ void Game::spawnEnemies(size_t count){
 
 
 void Game::endGame(){
-
+    std::cout << "Ended game!\n";
 }
 
 

@@ -21,6 +21,7 @@ class Entity {
                 float   rotState; // radians
                 float   mSize;
                 float   mSpeed;
+                int     mHealth;
 };
 
 
@@ -28,10 +29,11 @@ class Entity {
 class Projectile : public Entity {
     public:
                         Projectile(float x, float y, float rot) : Entity(x, y, rot){
-                            mSize  = PROJ_SIZE;
-                            mSpeed = PROJ_MOVSPD;
+                            mSize   = PROJ_SIZE;
+                            mSpeed  = PROJ_MOVSPD;
+                            mHealth = PROJ_HP;
                         }
-        virtual         ~Projectile(){ std::cout << "Deleting proj\n"; };
+        virtual         ~Projectile(){};
         virtual void    drawObj();
 };
 
@@ -40,13 +42,13 @@ class Projectile : public Entity {
 class Player : public Entity {
     public:
                         Player(float x, float y, float rot) : Entity(x, y, rot){
-                            mSize  = PLAYER_SIZE;
-                            mSpeed = PLAYER_MOVSPD;
+                            mSize   = PLAYER_SIZE;
+                            mSpeed  = PLAYER_MOVSPD;
+                            mHealth = PLAYER_HP;
                         }
         virtual         ~Player(){};
         virtual void    drawObj();
                 float   attackTime  = 0;
-                int     health      = PLAYER_HP;
                 std::set<Projectile*> mProjs;
                 void    createProj();
     private:
@@ -60,10 +62,11 @@ class Player : public Entity {
 class Enemy : public Entity {
     public:
                         Enemy(float x, float y, float rot) : Entity(x, y, rot){
-                            mSize  = ENEMY_SIZE;
-                            mSpeed = ENEMY_MOVSPD;
+                            mSize   = ENEMY_SIZE;
+                            mSpeed  = ENEMY_MOVSPD;
+                            mHealth = ENEMY_HP;
                         }
-        virtual         ~Enemy(){ std::cout << "Deleting enemy\n"; };
+        virtual         ~Enemy(){};
         virtual void    drawObj();
 };
 
