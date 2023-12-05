@@ -1,9 +1,16 @@
 #include "Entity.h"
 
 
-void Projectile::moveForward(){
-    this->mX += PROJ_MOVSPD * cos(rotState);
-    this->mY += PROJ_MOVSPD * sin(rotState);
+void Entity::moveForward(){
+    mX += mSpeed * cos(rotState);
+    mY += mSpeed * sin(rotState);
+}
+
+
+
+void Entity::moveBack(){
+    mX -= mSpeed * cos(rotState);
+    mY -= mSpeed * sin(rotState);
 }
 
 
@@ -17,10 +24,10 @@ void Projectile::drawObj(){
 
     glBegin(GL_QUADS);
         glColor3f(0,1,0);
-        glVertex2f(-PROJ_SIZE, -PROJ_SIZE);
-        glVertex2f(PROJ_SIZE, -PROJ_SIZE);
-        glVertex2f(PROJ_SIZE, PROJ_SIZE);
-        glVertex2f(-PROJ_SIZE, PROJ_SIZE);
+        glVertex2f(-mSize, -mSize);
+        glVertex2f(mSize, -mSize);
+        glVertex2f(mSize, mSize);
+        glVertex2f(-mSize, mSize);
     glEnd();
 
     glPopMatrix();
@@ -28,20 +35,6 @@ void Projectile::drawObj(){
 
 
 
-
-
-
-void Player::moveForward(){
-    this->mX += PLAYER_MOVSPD * cos(rotState);
-    this->mY += PLAYER_MOVSPD * sin(rotState);
-}
-
-
-
-void Player::moveBack(){
-    this->mX -= PLAYER_MOVSPD * cos(rotState);
-    this->mY -= PLAYER_MOVSPD * sin(rotState);
-}
 
 
 
@@ -64,10 +57,10 @@ void Player::drawObj(){
 void Player::drawBody(){
     glBegin(GL_QUADS);
         glColor3f(0,1,0);
-        glVertex2f(-PLAYER_SIZE, -PLAYER_SIZE);
-        glVertex2f(PLAYER_SIZE, -PLAYER_SIZE);
-        glVertex2f(PLAYER_SIZE, PLAYER_SIZE);
-        glVertex2f(-PLAYER_SIZE, PLAYER_SIZE);
+        glVertex2f(-mSize, -mSize);
+        glVertex2f(mSize, -mSize);
+        glVertex2f(mSize, mSize);
+        glVertex2f(-mSize, mSize);
     glEnd();
 }
 
@@ -76,9 +69,9 @@ void Player::drawBody(){
 void Player::drawWeapon(){
     glBegin(GL_TRIANGLES);
         glColor3f(0.5,1,0);
-        glVertex2f(PLAYER_SIZE * WEAPON_MULT, 0);
-        glVertex2f(PLAYER_SIZE, -PLAYER_SIZE);
-        glVertex2f(PLAYER_SIZE, PLAYER_SIZE);
+        glVertex2f(mSize * WEAPON_MULT, 0);
+        glVertex2f(mSize, -mSize);
+        glVertex2f(mSize, mSize);
     glEnd();
 }
 
@@ -102,20 +95,6 @@ void Player::createProj(){
 
 
 
-void Enemy::moveForward(){
-    this->mX += ENEMY_MOVSPD * cos(rotState);
-    this->mY += ENEMY_MOVSPD * sin(rotState);
-}
-
-
-
-void Enemy::moveBack(){
-    this->mX -= ENEMY_MOVSPD * cos(rotState);
-    this->mY -= ENEMY_MOVSPD * sin(rotState);
-}
-
-
-
 void Enemy::drawObj(){
     glPushMatrix();
     glTranslatef(mX, mY, 0.0f);
@@ -125,10 +104,10 @@ void Enemy::drawObj(){
 
     glBegin(GL_QUADS);
         glColor3f(1,0,0);
-        glVertex2f(-ENEMY_SIZE, -ENEMY_SIZE);
-        glVertex2f(ENEMY_SIZE, -ENEMY_SIZE);
-        glVertex2f(ENEMY_SIZE, ENEMY_SIZE);
-        glVertex2f(-ENEMY_SIZE, ENEMY_SIZE);
+        glVertex2f(-mSize, -mSize);
+        glVertex2f(mSize, -mSize);
+        glVertex2f(mSize, mSize);
+        glVertex2f(-mSize, mSize);
     glEnd();
 
     glPopMatrix();

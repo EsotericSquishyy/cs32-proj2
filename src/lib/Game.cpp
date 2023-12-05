@@ -79,6 +79,27 @@ void Game::updateEntities(){
     }
 
     // Check if overlapping with enemy
+    for(auto it1 = mEnemies.begin(); it1 != mEnemies.end();){
+        bool    deleted = false;
+        Entity* cEnemy = *it1;
+        for(auto it2 = mPlayer->mProjs.begin(); it2 != mPlayer->mProjs.end();){
+            Entity* cProj = *it2;
+
+            if(checkCollide(cEnemy, cProj)){
+                mEnemies.erase(it1++);
+                mPlayer->mProjs.erase(it2++);
+                deleted = true;
+                break;
+            }
+            else{
+                ++it1;
+            }
+        }
+
+        if(!deleted){
+            ++it1;
+        }
+    }
 
     // Check if projectile is overlapping with enemy
 
@@ -87,20 +108,41 @@ void Game::updateEntities(){
 
 
 
+bool Game::checkCollide(Entity* obj1, Entity* obj2){
+    return false;
+}
+
+
+
 void Game::killOB(){
-    if(mPlayer->mX - PLAYER_SIZE > 1 || mPlayer->mX + PLAYER_SIZE < -1 ||
-       mPlayer->mY - PLAYER_SIZE > 1 || mPlayer->mX + PLAYER_SIZE < -1){
-        // Game over function to handle cleanups and endscreen
-        return;
+    if(mPlayer->mX - mPlayer->mSize > 1 || mPlayer->mX + mPlayer->mSize < -1 ||
+       mPlayer->mY - mPlayer->mSize > 1 || mPlayer->mX + mPlayer->mSize < -1){
+        endGame();
     }
 
-    // Killing enemies
+    for(auto it = mEnemies.begin(); it != mEnemies.end();){
+        Entity* cEnemy = *it;
+        if(cEnemy->mX - cEnemy->mSize > 1 || cEnemy->mX + cEnemy->mSize < -1 ||
+           cEnemy->mY - cEnemy->mSize > 1 || cEnemy->mY + cEnemy->mSize < -1){
 
-    for(Projectile* cProj : mPlayer->mProjs){
-        if(cProj->mX - PLAYER_SIZE > 1 || cProj->mX + PLAYER_SIZE < -1 ||
-           cProj->mY - PLAYER_SIZE > 1 || cProj->mX + PLAYER_SIZE < -1){
-            // kill projectile
-            return;
+            mEnemies.erase(it++);
+            delete cEnemy;
+        }
+        else{
+            ++it;
+        }
+    }
+
+    for(auto it = mPlayer->mProjs.begin(); it != mPlayer->mProjs.end();){
+        Entity* cProj = *it;
+        if(cProj->mX - cProj->mSize > 1 || cProj->mX + cProj->mSize < -1 ||
+           cProj->mY - cProj->mSize > 1 || cProj->mY + cProj->mSize < -1){
+
+            mPlayer->mProjs.erase(it++);
+            delete cProj;
+        }
+        else{
+            ++it;
         }
     }
 }
@@ -127,6 +169,12 @@ void Game::spawnEnemies(size_t count){
         }
         mEnemies.insert(cEnemy);
     }
+}
+
+
+
+void Game::endGame(){
+
 }
 
 

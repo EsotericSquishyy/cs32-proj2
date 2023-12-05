@@ -9,7 +9,7 @@ const float         PROJ_SIZE       = 0.01f;   // Half the width of player proje
 const int           PLAYER_HP       = 5;       // HP of Player
 const int           PLAYER_ATT      = 1000;    // Cooldown, in milliseconds, to attack
 const float         PLAYER_MOVSPD   = 0.02f;   // Speed of player
-const float         PLAYER_ROTSPD   = 0.02f;   // Rotation speed of player
+const float         PLAYER_ROTSPD   = 0.05f;   // Rotation speed of player
 const float         PLAYER_SIZE     = 0.05f;   // Half the width of the player
 const float         WEAPON_MULT     = 1.5f;    // Relative length of weapon
 
