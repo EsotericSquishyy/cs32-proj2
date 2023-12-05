@@ -32,7 +32,7 @@ class Game {
         void    moveProjs();
         void    moveEnemies();
         void    updateEntities();
-        bool    checkCollide(Entity* obj1, Entity* obj2);
+        bool    checkCollide(Entity* obj1, Entity* obj2) const;
         void    killOB();
         void    spawnEnemies(size_t count);
         void    endGame();

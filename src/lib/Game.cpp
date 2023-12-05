@@ -87,12 +87,16 @@ void Game::updateEntities(){
 
             if(checkCollide(cEnemy, cProj)){
                 mEnemies.erase(it1++);
+                delete cEnemy;
+
                 mPlayer->mProjs.erase(it2++);
+                delete cProj;
+
                 deleted = true;
                 break;
             }
             else{
-                ++it1;
+                ++it2;
             }
         }
 
@@ -108,8 +112,14 @@ void Game::updateEntities(){
 
 
 
-bool Game::checkCollide(Entity* obj1, Entity* obj2){
-    return false;
+bool Game::checkCollide(Entity* obj1, Entity* obj2) const{
+
+    float xDisp     = obj1->mX - obj2->mX;
+    float yDisp     = obj1->mY - obj2->mY;
+    float realDisp  = sqrt(pow(xDisp, 2) + pow(yDisp, 2));
+    float maxDisp   = obj1->mSize + obj2->mSize;
+
+    return (realDisp <= maxDisp);
 }
 
 
