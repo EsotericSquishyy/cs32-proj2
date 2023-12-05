@@ -28,12 +28,14 @@ class Game {
         };
 
     private:
-        void    spawnEnemies(size_t count);
         void    movePlayer();
         void    moveProjs();
         void    moveEnemies();
-        void    killOB();
         void    updateEntities();
+        bool    checkCollide(Entity* obj1, Entity* obj2) const;
+        void    killOB();
+        void    spawnEnemies(size_t count);
+        void    endGame();
         Player* mPlayer;
         std::set<Enemy*> mEnemies;
 };
