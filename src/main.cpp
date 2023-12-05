@@ -33,7 +33,13 @@ int main(int argc, char** argv) {
     glutTimerFunc(DELTA_TIME, timer, 0);
 
     // Processes events and doesn't return until program is manually exited
-    glutMainLoop();
+    try{
+        glutMainLoop();
+    }
+    catch(const std::runtime_error& e){
+        std::cout << e.what() << std::endl;
+        return 0;
+    }
 }
 
 

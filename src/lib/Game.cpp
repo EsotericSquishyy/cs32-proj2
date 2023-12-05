@@ -223,7 +223,7 @@ void Game::spawnEnemies(size_t count){
 
 
 void Game::endGame(){
-    std::cout << "Ended game!\n";
+    throw std::runtime_error("Ended game!");
 }
 
 
