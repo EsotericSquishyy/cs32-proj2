@@ -3,7 +3,7 @@
 
 
 Game::Game(){
-    mPlayer = new Player(0,0);
+    mPlayer = new Player(0,0,M_PI/2);
     spawnEnemies(INIT_ENEMIES);
 }
 
@@ -11,54 +11,98 @@ Game::Game(){
 
 void Game::drawPlay(){
     mPlayer->drawObj();
-    for(size_t i = 0; i < mEnemies.size(); i++){
-        mEnemies[i]->drawObj();
+    for(Enemy* cEnemy : mEnemies){
+        cEnemy->drawObj();
     }
 }
+
+
 
 void Game::movePlayer(){
-
     if(pressedKeys['w']){
-        mPlayer->mY += PLAYER_SPEED;
+        mPlayer->moveForward();
     }
     if(pressedKeys['s']){
-        mPlayer->mY -= PLAYER_SPEED;
+        mPlayer->moveBack();
     }
     if(pressedKeys['a']){
-        mPlayer->mX -= PLAYER_SPEED;
+        mPlayer->rotState = fmod(mPlayer->rotState + PLAYER_ROTSPD*2*M_PI + 2*M_PI, 2*M_PI);
     }
     if(pressedKeys['d']){
-        mPlayer->mX += PLAYER_SPEED;
-    }
-    if(pressedKeys['q']){
-        pressedKeys['q'] = false;
-        mPlayer->rotState = (((mPlayer->rotState + 1) % 4) + 4) % 4;
-    }
-    if(pressedKeys['e']){
-        pressedKeys['e'] = false;
-        mPlayer->rotState = (((mPlayer->rotState - 1) % 4) + 4) % 4;
+        mPlayer->rotState = fmod(mPlayer->rotState - PLAYER_ROTSPD*2*M_PI + 2*M_PI, 2*M_PI);
     }
 
+    moveProjs();
 }
+
+
+
+void Game::moveProjs(){
+    for(Projectile* cProj : mPlayer->mProjs){
+        cProj->moveForward();
+    }
+}
+
+
 
 void Game::moveEnemies(){
-    float movemultiplier;
-    float moveX;
-    float moveY;
-    for (int i = 0; i<int(mEnemies.size()); i++){
-        moveX = mEnemies[i]->mX - mPlayer->mX;
-        moveY = mEnemies[i]->mY - mPlayer->mY;
-        movemultiplier = sqrt(pow(moveX, 2) + pow(moveY, 2));
-        movemultiplier = ENEMY_SPEED/movemultiplier;
-        mEnemies[i]->mX -= moveX*movemultiplier;
-        mEnemies[i]->mY -= moveY*movemultiplier;
+    for (Enemy* cEnemy : mEnemies){
+        float xDisp = mPlayer->mX - cEnemy->mX;
+        float yDisp = mPlayer->mY - cEnemy->mY;
+        float angle = 0;
+        if(xDisp > 0){
+            angle = std::atan(yDisp / xDisp);
+        } else {
+            angle = M_PI + std::atan(yDisp / xDisp);
+        }
+        cEnemy->rotState = fmod(angle + 2*M_PI, 2*M_PI);
+        cEnemy->moveForward();
     }
 }
 
+
+
 void Game::updatePlay(){
-    // Implementation for updating all objects in game
     movePlayer();
     moveEnemies();
+
+    updateEntities();
+}
+
+
+
+void Game::updateEntities(){
+    mPlayer->attackTime -= DELTA_TIME;
+    if(pressedKeys[' '] && mPlayer->attackTime <= 0.0f){
+        mPlayer->attackTime = PLAYER_ATT; 
+        mPlayer->createProj();
+    }
+
+    // Check if overlapping with enemy
+
+    // Check if projectile is overlapping with enemy
+
+    killOB();
+}
+
+
+
+void Game::killOB(){
+    if(mPlayer->mX - PLAYER_SIZE > 1 || mPlayer->mX + PLAYER_SIZE < -1 ||
+       mPlayer->mY - PLAYER_SIZE > 1 || mPlayer->mX + PLAYER_SIZE < -1){
+        // Game over function to handle cleanups and endscreen
+        return;
+    }
+
+    // Killing enemies
+
+    for(Projectile* cProj : mPlayer->mProjs){
+        if(cProj->mX - PLAYER_SIZE > 1 || cProj->mX + PLAYER_SIZE < -1 ||
+           cProj->mY - PLAYER_SIZE > 1 || cProj->mX + PLAYER_SIZE < -1){
+            // kill projectile
+            return;
+        }
+    }
 }
 
 
@@ -70,18 +114,18 @@ void Game::spawnEnemies(size_t count){
         Enemy* cEnemy;
 
         if(r >= 0.0f && r <= 2.0f){
-            cEnemy = new Enemy(1.0f - r, 0.8f);
+            cEnemy = new Enemy(1.0f - r, 1.0f, 0);
         }
         else if (r > 2.0f && r <= 4.0f){
-            cEnemy = new Enemy(0.8f, 1.0f - (r - 2.0f));
+            cEnemy = new Enemy(1.0f, 1.0f - (r - 2.0f), 0);
         }
         else if (r > 4.0f && r <= 6.0f){
-            cEnemy = new Enemy(1.0f - (r - 4.0f), -0.8f);
+            cEnemy = new Enemy(1.0f - (r - 4.0f), -1.0f, 0);
         }
         else{
-            cEnemy = new Enemy(-0.8f, 1.0f - (r - 6.0f));
+            cEnemy = new Enemy(-1.0f, 1.0f - (r - 6.0f), 0);
         }
-        mEnemies.push_back(cEnemy);
+        mEnemies.insert(cEnemy);
     }
 }
 

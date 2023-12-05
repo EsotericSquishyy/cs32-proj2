@@ -1,89 +1,137 @@
 #include "Entity.h"
 
 
-
-Player::Player(float x, float y){
-   mX = x;
-   mY = y;
+void Projectile::moveForward(){
+    this->mX += PROJ_MOVSPD * cos(rotState);
+    this->mY += PROJ_MOVSPD * sin(rotState);
 }
 
 
-void Player::drawObj(){
+
+void Projectile::drawObj(){
+    glPushMatrix();
+    glTranslatef(mX, mY, 0.0f);
+
+    float degrees = rotState * 180 / M_PI;
+    glRotatef(degrees, 0, 0, 1);
+
     glBegin(GL_QUADS);
         glColor3f(0,1,0);
-        glVertex2f(mX - PLAYER_SIZE, mY - PLAYER_SIZE);
-        glVertex2f(mX + PLAYER_SIZE, mY - PLAYER_SIZE);
-        glVertex2f(mX + PLAYER_SIZE, mY + PLAYER_SIZE);
-        glVertex2f(mX - PLAYER_SIZE, mY + PLAYER_SIZE);
+        glVertex2f(-PROJ_SIZE, -PROJ_SIZE);
+        glVertex2f(PROJ_SIZE, -PROJ_SIZE);
+        glVertex2f(PROJ_SIZE, PROJ_SIZE);
+        glVertex2f(-PROJ_SIZE, PROJ_SIZE);
     glEnd();
 
+    glPopMatrix();
+}
+
+
+
+
+
+
+void Player::moveForward(){
+    this->mX += PLAYER_MOVSPD * cos(rotState);
+    this->mY += PLAYER_MOVSPD * sin(rotState);
+}
+
+
+
+void Player::moveBack(){
+    this->mX -= PLAYER_MOVSPD * cos(rotState);
+    this->mY -= PLAYER_MOVSPD * sin(rotState);
+}
+
+
+
+void Player::drawObj(){
+    glPushMatrix();
+    glTranslatef(mX, mY, 0.0f);
+
+    float degrees = rotState * 180 / M_PI;
+    glRotatef(degrees, 0, 0, 1);
+
+    drawBody();
     drawWeapon();
 
+    glPopMatrix();
     drawProjectiles();
 }
 
 
 
+void Player::drawBody(){
+    glBegin(GL_QUADS);
+        glColor3f(0,1,0);
+        glVertex2f(-PLAYER_SIZE, -PLAYER_SIZE);
+        glVertex2f(PLAYER_SIZE, -PLAYER_SIZE);
+        glVertex2f(PLAYER_SIZE, PLAYER_SIZE);
+        glVertex2f(-PLAYER_SIZE, PLAYER_SIZE);
+    glEnd();
+}
+
+
+
 void Player::drawWeapon(){
-    switch(rotState){
-        case 0:
-            glBegin(GL_TRIANGLES);
-                glColor3f(0.5,1,0);
-                glVertex2f(mX, mY + PLAYER_SIZE * WEAPON_MULT);
-                glVertex2f(mX - PLAYER_SIZE, mY + PLAYER_SIZE);
-                glVertex2f(mX + PLAYER_SIZE, mY + PLAYER_SIZE);
-            glEnd();
-            break;
-        case 1:
-            glBegin(GL_TRIANGLES);
-                glColor3f(0.5,1,0);
-                glVertex2f(mX - PLAYER_SIZE * WEAPON_MULT, mY);
-                glVertex2f(mX - PLAYER_SIZE, mY - PLAYER_SIZE);
-                glVertex2f(mX - PLAYER_SIZE, mY + PLAYER_SIZE);
-            glEnd();
-            break;
-        case 2:
-            glBegin(GL_TRIANGLES);
-                glColor3f(0.5,1,0);
-                glVertex2f(mX, mY - PLAYER_SIZE * WEAPON_MULT);
-                glVertex2f(mX + PLAYER_SIZE, mY - PLAYER_SIZE);
-                glVertex2f(mX - PLAYER_SIZE, mY - PLAYER_SIZE);
-            glEnd();
-            break;
-        case 3:
-            glBegin(GL_TRIANGLES);
-                glColor3f(0.5,1,0);
-                glVertex2f(mX + PLAYER_SIZE * WEAPON_MULT, mY);
-                glVertex2f(mX + PLAYER_SIZE, mY + PLAYER_SIZE);
-                glVertex2f(mX + PLAYER_SIZE, mY - PLAYER_SIZE);
-            glEnd();
-            break;
+    glBegin(GL_TRIANGLES);
+        glColor3f(0.5,1,0);
+        glVertex2f(PLAYER_SIZE * WEAPON_MULT, 0);
+        glVertex2f(PLAYER_SIZE, -PLAYER_SIZE);
+        glVertex2f(PLAYER_SIZE, PLAYER_SIZE);
+    glEnd();
+}
+
+
+
+void Player::drawProjectiles(){
+    for(Projectile* cProj : mProjs){
+        cProj->drawObj();
     }
 }
 
 
-void Player::drawProjectiles(){
-    // Implemented in later checkpoint
+
+void Player::createProj(){
+    Projectile* cProj = new Projectile(mX, mY, rotState);
+    mProjs.insert(cProj);
 }
 
 
 
 
 
-Enemy::Enemy(float x, float y){
-   mX = x;
-   mY = y;
+
+void Enemy::moveForward(){
+    this->mX += ENEMY_MOVSPD * cos(rotState);
+    this->mY += ENEMY_MOVSPD * sin(rotState);
 }
+
+
+
+void Enemy::moveBack(){
+    this->mX -= ENEMY_MOVSPD * cos(rotState);
+    this->mY -= ENEMY_MOVSPD * sin(rotState);
+}
+
 
 
 void Enemy::drawObj(){
+    glPushMatrix();
+    glTranslatef(mX, mY, 0.0f);
+
+    float degrees = rotState * 180 / M_PI;
+    glRotatef(degrees, 0, 0, 1);
+
     glBegin(GL_QUADS);
         glColor3f(1,0,0);
-        glVertex2f(mX - ENEMY_SIZE, mY - ENEMY_SIZE);
-        glVertex2f(mX + ENEMY_SIZE, mY - ENEMY_SIZE);
-        glVertex2f(mX + ENEMY_SIZE, mY + ENEMY_SIZE);
-        glVertex2f(mX - ENEMY_SIZE, mY + ENEMY_SIZE);
+        glVertex2f(-ENEMY_SIZE, -ENEMY_SIZE);
+        glVertex2f(ENEMY_SIZE, -ENEMY_SIZE);
+        glVertex2f(ENEMY_SIZE, ENEMY_SIZE);
+        glVertex2f(-ENEMY_SIZE, ENEMY_SIZE);
     glEnd();
+
+    glPopMatrix();
 }
 
 
