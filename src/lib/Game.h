@@ -39,7 +39,8 @@ class Game {
         void    endGame();
         Player* mPlayer;
         std::set<Enemy*> mEnemies;
-        int     mTime = 0;
+        int     mTime  = 0;
+        int     mScore = 0;
 };
 
 
