@@ -18,6 +18,7 @@ class Game {
         void    updatePlay();
         void    drawPlay();
         void    drawUI();
+        int     getScore() const;
         std::map<unsigned char, bool> pressedKeys {
             {'w', false}, // Move up
             {'a', false}, // Move left

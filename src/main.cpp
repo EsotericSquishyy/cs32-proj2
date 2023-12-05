@@ -7,6 +7,11 @@ void display();
 void keyDown(unsigned char key, int x, int y);
 void keyUp(unsigned char key, int x, int y);
 void timer(int);
+
+void displayEnd();
+void keyDownEnd(unsigned char key, int x, int y);
+void timerEnd(int);
+
 Game* gameManager;
 
 int main(int argc, char** argv) {
@@ -37,9 +42,18 @@ int main(int argc, char** argv) {
         glutMainLoop();
     }
     catch(const std::runtime_error& e){
-        std::cout << e.what() << std::endl;
-        return 0;
+        glutDisplayFunc(displayEnd);
+        glutKeyboardFunc(keyDownEnd);
+        glutTimerFunc(DELTA_TIME, timerEnd, 0);
+
+        try{
+            glutMainLoop();
+        }
+        catch(const std::runtime_error& e){
+            return 0;
+        }
     }
+    return 1;
 }
 
 
@@ -104,6 +118,53 @@ void timer(int){
 
     // Calls next frame
     glutTimerFunc(DELTA_TIME,timer,0);
+}
+
+
+
+void displayEnd(){
+    glClear(GL_COLOR_BUFFER_BIT);
+    glLoadIdentity();
+
+    glColor3f(1,0,1);
+    std::string gameT = "Game Over";
+    glRasterPos3f(-0.9f,0.3f,0);
+    for (size_t i = 0; i < gameT.size(); i++){
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, gameT.at(i));
+    }
+
+    std::string scoreT = "Your score: " + std::to_string(gameManager->getScore());
+    glRasterPos3f(-0.9f,0.2f,0);
+    for (size_t i = 0; i < scoreT.size(); i++){
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, scoreT.at(i));
+    }
+
+    glColor3f(1,0,0);
+    std::string exitT = "Press [SPACE] to exit.";
+    glRasterPos3f(-0.9f,-0.1f,0);
+    for (size_t i = 0; i < exitT.size(); i++){
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, exitT.at(i));
+    }
+
+    glutSwapBuffers();
+}
+
+
+
+void keyDownEnd(unsigned char key, int x, int y){
+    if(key == ' '){
+        throw std::runtime_error("Close game!");
+    }
+}
+
+
+
+void timerEnd(int){
+    // Will recall glutDisplayFunc()
+    glutPostRedisplay();
+
+    // Calls next frame
+    glutTimerFunc(DELTA_TIME,timerEnd,0);
 }
 
 
