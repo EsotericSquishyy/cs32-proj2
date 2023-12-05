@@ -18,6 +18,24 @@ void Game::drawPlay(){
 
 
 
+void Game::drawUI(){
+    glColor3f(0,0,1);
+
+    std::string scoreT = "Score: " + std::to_string(mTime / 10);
+    glRasterPos3f(0.6f,0.9f,0);
+    for (size_t i = 0; i < scoreT.size(); i++){
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, scoreT.at(i));
+    }
+
+    std::string healthT = "Health: " + std::to_string(mPlayer->mHealth);
+    glRasterPos3f(-0.9f,0.9f,0);
+    for (size_t i = 0; i < healthT.size(); i++){
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, healthT.at(i));
+    }
+}
+
+
+
 void Game::movePlayer(){
     if(pressedKeys['w']){
         mPlayer->moveForward();
@@ -63,6 +81,8 @@ void Game::moveEnemies(){
 
 
 void Game::updatePlay(){
+    mTime += DELTA_TIME;
+
     movePlayer();
     moveEnemies();
 

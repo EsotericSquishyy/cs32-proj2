@@ -17,6 +17,7 @@ class Game {
                 Game();
         void    updatePlay();
         void    drawPlay();
+        void    drawUI();
         std::map<unsigned char, bool> pressedKeys {
             {'w', false}, // Move up
             {'a', false}, // Move left
@@ -38,6 +39,7 @@ class Game {
         void    endGame();
         Player* mPlayer;
         std::set<Enemy*> mEnemies;
+        int     mTime = 0;
 };
 
 

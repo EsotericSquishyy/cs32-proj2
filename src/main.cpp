@@ -48,10 +48,10 @@ void display() {
     glLoadIdentity(); // Resets coordinates
 
     gameManager->drawPlay();
+    gameManager->drawUI();
 
     // Swaps Front and Back buffer
     glutSwapBuffers();
-    // glFlush();
 }
 
 
