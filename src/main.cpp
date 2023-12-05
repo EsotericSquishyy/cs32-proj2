@@ -3,11 +3,6 @@
 #include "lib/Game.h"
 
 
-const unsigned int DELTA_TIME   = 1000/30; // Time in ms between updates
-const int WIDTH                 = 600;     // Window width
-const int HEIGHT                = 600;     // Window height
-
-
 void display();
 void keyDown(unsigned char key, int x, int y);
 void keyUp(unsigned char key, int x, int y);

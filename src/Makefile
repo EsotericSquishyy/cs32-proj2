@@ -16,13 +16,13 @@ Prog: main.o Game.o Entity.o
 	g++ $(CXXFLAGS) $+ -o $@ $(BREWFLAGS) $(GLFLAGS)
 
 
-main.o: main.cpp
+main.o: main.cpp lib/Constants.h
 	g++ $(CXXFLAGS) -c $<
 
-Game.o: lib/Game.cpp lib/Game.h
+Game.o: lib/Game.cpp lib/Game.h lib/Constants.h
 	g++ $(CXXFLAGS) -c $<
 
-Entity.o: lib/Entity.cpp lib/Entity.h
+Entity.o: lib/Entity.cpp lib/Entity.h lib/Constants.h
 	g++ $(CXXFLAGS) -c $<
 
 

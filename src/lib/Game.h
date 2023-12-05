@@ -30,9 +30,12 @@ class Game {
     private:
         void    spawnEnemies(size_t count);
         void    movePlayer();
+        void    moveProjs();
         void    moveEnemies();
+        void    killOB();
+        void    updateEntities();
         Player* mPlayer;
-        std::vector<Enemy*> mEnemies;
+        std::set<Enemy*> mEnemies;
 };
 
 
