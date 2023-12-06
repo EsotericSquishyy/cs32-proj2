@@ -154,6 +154,7 @@ void Game::updateEntities(){
 
     killOB();
 
+    spawnTime -= DELTA_TIME;
     if(spawnTime <= 0){
         spawnTime = ENEMY_SPAWN;
         spawnEnemies(1);
