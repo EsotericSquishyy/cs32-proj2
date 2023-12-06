@@ -1,6 +1,6 @@
 CXXFLAGS = -Wall -Wextra -std=c++17 -Wno-unused-parameter -Wno-deprecated-declarations -Wno-deprecated
-FRAMEWORKS = -framework OpenGL -framework GLUT
-BREWFLAGS = -I/opt/homebrew/include -L/opt/homebrew/lib
+GLFLAGS  = -lGL -lGLU -lglut
+OSXFLAGS = -I/opt/homebrew/include -L/opt/homebrew/lib -framework OpenGL -framework GLUT 
 
 
 # Won't make new files
@@ -13,7 +13,10 @@ BREWFLAGS = -I/opt/homebrew/include -L/opt/homebrew/lib
 
 
 Prog: main.o Game.o Entity.o
-	g++ $(CXXFLAGS) $+ -o $@ $(BREWFLAGS) $(FRAMEWORKS)
+	g++ $(CXXFLAGS) $+ -o $@ $(GLFLAGS)
+
+Prog_OSX: main.o Game.o Entity.o
+	g++ $(CXXFLAGS) $+ -o $@ $(OSXFLAGS)
 
 
 main.o: main.cpp lib/Constants.h
