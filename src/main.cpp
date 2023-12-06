@@ -8,57 +8,12 @@ void keyDown(unsigned char key, int x, int y);
 void keyUp(unsigned char key, int x, int y);
 void timer(int);
 
+void displayStart();
 void displayEnd();
-void keyDownEnd(unsigned char key, int x, int y);
-void timerEnd(int);
+void keyDownUI(unsigned char key, int x, int y);
+void timerUI(int);
 
 Game* gameManager;
-
-int main(int argc, char** argv) {
-
-    // Initializes glut
-    glutInit(&argc, argv);
-    // Front (displayed) and Back buffer
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-
-    // Setup of window
-    glutInitWindowPosition(80, 80);
-    glutInitWindowSize(WIDTH, HEIGHT);
-    glutCreateWindow("Colosseum Game");
-
-    // Set default buffer color
-    glClearColor(0,0,0,1);
-
-    gameManager = new Game();
-
-    // Calls display when window needs to be repainted
-    glutDisplayFunc(display);
-    glutKeyboardFunc(keyDown);
-    glutKeyboardUpFunc(keyUp);
-    glutTimerFunc(DELTA_TIME, timer, 0);
-
-    // Processes events and doesn't return until program is manually exited
-    try{
-        glutMainLoop();
-    }
-    catch(const std::runtime_error& e){
-        glutDisplayFunc(displayEnd);
-        glutKeyboardFunc(keyDownEnd);
-        glutTimerFunc(DELTA_TIME, timerEnd, 0);
-
-        try{
-            glutMainLoop();
-        }
-        catch(const std::runtime_error& e){
-            return 0;
-        }
-    }
-    return 1;
-}
-
-
-
-
 
 
 
@@ -122,6 +77,29 @@ void timer(int){
 
 
 
+void displayStart(){
+    glClear(GL_COLOR_BUFFER_BIT);
+    glLoadIdentity();
+
+    glColor3f(1,1,1);
+    std::string gameT = "Colosseum Game!";
+    glRasterPos3f(-0.9f,0.3f,0);
+    for (size_t i = 0; i < gameT.size(); i++){
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, gameT.at(i));
+    }
+
+    glColor3f(1,1,0.8f);
+    std::string exitT = "Press [SPACE] to start.";
+    glRasterPos3f(-0.9f,-0.1f,0);
+    for (size_t i = 0; i < exitT.size(); i++){
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, exitT.at(i));
+    }
+
+    glutSwapBuffers();
+}
+
+
+
 void displayEnd(){
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
@@ -151,20 +129,72 @@ void displayEnd(){
 
 
 
-void keyDownEnd(unsigned char key, int x, int y){
+void keyDownUI(unsigned char key, int x, int y){
     if(key == ' '){
-        throw std::runtime_error("Close game!");
+        throw std::runtime_error("Next screen!");
     }
 }
 
 
 
-void timerEnd(int){
+void timerUI(int){
     // Will recall glutDisplayFunc()
     glutPostRedisplay();
 
     // Calls next frame
-    glutTimerFunc(DELTA_TIME,timerEnd,0);
+    glutTimerFunc(DELTA_TIME,timerUI,0);
+}
+
+
+
+
+
+
+int main(int argc, char** argv) {
+
+    // Initializes glut
+    glutInit(&argc, argv);
+    // Front (displayed) and Back buffer
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+
+    // Setup of window
+    glutInitWindowPosition(80, 80);
+    glutInitWindowSize(WIDTH, HEIGHT);
+    glutCreateWindow("Colosseum Game");
+
+    // Set default buffer color
+    glClearColor(0,0,0,1);
+
+    gameManager = new Game();
+
+    glutDisplayFunc(displayStart);
+    glutKeyboardFunc(keyDownUI);
+    glutTimerFunc(DELTA_TIME, timerUI, 0);
+    try{
+        glutMainLoop();
+    }
+    // Gameplay
+    catch(const std::runtime_error& e){
+        glutDisplayFunc(display);
+        glutKeyboardFunc(keyDown);
+        glutKeyboardUpFunc(keyUp);
+        glutTimerFunc(DELTA_TIME, timer, 0);
+    }
+    try{
+        glutMainLoop();
+    }
+    // End Screen
+    catch(const std::runtime_error& e){
+        glutDisplayFunc(displayEnd);
+        glutKeyboardFunc(keyDownUI);
+        glutTimerFunc(DELTA_TIME, timerUI, 0);
+    }
+    try{
+        glutMainLoop();
+    }
+    catch(const std::runtime_error& e){
+    }
+    return 0;
 }
 
 
