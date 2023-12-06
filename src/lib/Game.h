@@ -40,6 +40,7 @@ class Game {
         void    endGame();
         Player* mPlayer;
         std::set<Enemy*> mEnemies;
+        int     spawnTime = ENEMY_SPAWN;
         int     mTime  = 0;
         int     mScore = 0;
 };

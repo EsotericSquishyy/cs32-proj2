@@ -153,6 +153,11 @@ void Game::updateEntities(){
     }
 
     killOB();
+
+    if(spawnTime <= 0){
+        spawnTime = ENEMY_SPAWN;
+        spawnEnemies(1);
+    }
 }
 
 
