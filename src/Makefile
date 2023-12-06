@@ -1,5 +1,5 @@
-CXXFLAGS = -Wall -Wextra -std=c++17 -Wno-unused-parameter
-GLFLAGS = -lGL -lGLU -lglut
+CXXFLAGS = -Wall -Wextra -std=c++17 -Wno-unused-parameter -Wno-deprecated-declarations -Wno-deprecated
+FRAMEWORKS = -framework OpenGL -framework GLUT
 BREWFLAGS = -I/opt/homebrew/include -L/opt/homebrew/lib
 
 
@@ -13,7 +13,7 @@ BREWFLAGS = -I/opt/homebrew/include -L/opt/homebrew/lib
 
 
 Prog: main.o Game.o Entity.o
-	g++ $(CXXFLAGS) $+ -o $@ $(BREWFLAGS) $(GLFLAGS)
+	g++ $(CXXFLAGS) $+ -o $@ $(BREWFLAGS) $(FRAMEWORKS)
 
 
 main.o: main.cpp lib/Constants.h
