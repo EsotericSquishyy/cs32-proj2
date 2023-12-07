@@ -15,7 +15,7 @@ const float         PLAYER_SIZE     = 0.05f;   // Half the width of the player
 const float         WEAPON_MULT     = 1.5f;    // Relative length of weapon
 
 const int           ENEMY_HP        = 1;       // HP of Enemy
-const float         ENEMY_MOVSPD    = 0.01f;   // Speed of enemy
+//const float         ENEMY_MOVSPD    = 0.01f;   // Speed of enemy
 const float         ENEMY_SIZE      = 0.05f;   // Half the width of the enemy
 const int           ENEMY_SPAWN     = 1000;    // Time in milliseconds between enemy spawns
 

@@ -215,18 +215,18 @@ void Game::spawnEnemies(size_t count){
     for(size_t i = 0; i < count; i++){
         float r = 8 * static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         Enemy* cEnemy;
-
+        float randomSpeed = 0.01f * (1 + (rand() % 9))*.1;
         if(r >= 0.0f && r <= 2.0f){
-            cEnemy = new Enemy(1.0f - r, 1.0f, 0);
+            cEnemy = new Enemy(1.0f - r, 1.0f, 0, randomSpeed );
         }
         else if (r > 2.0f && r <= 4.0f){
-            cEnemy = new Enemy(1.0f, 1.0f - (r - 2.0f), 0);
+            cEnemy = new Enemy(1.0f, 1.0f - (r - 2.0f), 0, randomSpeed );
         }
         else if (r > 4.0f && r <= 6.0f){
-            cEnemy = new Enemy(1.0f - (r - 4.0f), -1.0f, 0);
+            cEnemy = new Enemy(1.0f - (r - 4.0f), -1.0f, 0, randomSpeed );
         }
         else{
-            cEnemy = new Enemy(-1.0f, 1.0f - (r - 6.0f), 0);
+            cEnemy = new Enemy(-1.0f, 1.0f - (r - 6.0f), 0, randomSpeed );
         }
         mEnemies.insert(cEnemy);
     }
