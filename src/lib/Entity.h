@@ -72,9 +72,8 @@ class Enemy : public Entity {
     public:
                         Enemy(float x, float y, float rot, float speed) : Entity(x, y, rot){
                             mSize   = ENEMY_SIZE;
-                            //mSpeed  = ENEMY_MOVSPD;
-                            mHealth = ENEMY_HP;
                             mSpeed  = speed;
+                            mHealth = ENEMY_HP;
                         }
         virtual         ~Enemy(){};
         virtual void    drawObj();
