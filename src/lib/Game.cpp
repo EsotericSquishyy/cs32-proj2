@@ -18,6 +18,30 @@ void Game::drawPlay(){
 
 
 
+void Game::drawUI(){
+    glColor3f(0,0,1);
+
+    std::string scoreT = "Score: " + std::to_string(getScore());
+    glRasterPos3f(0.6f,0.9f,0);
+    for (size_t i = 0; i < scoreT.size(); i++){
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, scoreT.at(i));
+    }
+
+    std::string healthT = "Health: " + std::to_string(mPlayer->mHealth);
+    glRasterPos3f(-0.9f,0.9f,0);
+    for (size_t i = 0; i < healthT.size(); i++){
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, healthT.at(i));
+    }
+}
+
+
+
+int Game::getScore() const{
+    return mScore;
+}
+
+
+
 void Game::movePlayer(){
     if(pressedKeys['w']){
         mPlayer->moveForward();
@@ -63,6 +87,9 @@ void Game::moveEnemies(){
 
 
 void Game::updatePlay(){
+    mTime += DELTA_TIME;
+    mScore = (mTime - (mTime % 1000)) / 10;
+
     movePlayer();
     moveEnemies();
 
@@ -126,6 +153,12 @@ void Game::updateEntities(){
     }
 
     killOB();
+
+    spawnTime -= DELTA_TIME;
+    if(spawnTime <= 0){
+        spawnTime = ENEMY_SPAWN;
+        spawnEnemies(1);
+    }
 }
 
 
@@ -202,7 +235,7 @@ void Game::spawnEnemies(size_t count){
 
 
 void Game::endGame(){
-    std::cout << "Ended game!\n";
+    throw std::runtime_error("Ended game!");
 }
 
 

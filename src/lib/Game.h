@@ -17,6 +17,8 @@ class Game {
                 Game();
         void    updatePlay();
         void    drawPlay();
+        void    drawUI();
+        int     getScore() const;
         std::map<unsigned char, bool> pressedKeys {
             {'w', false}, // Move up
             {'a', false}, // Move left
@@ -38,6 +40,9 @@ class Game {
         void    endGame();
         Player* mPlayer;
         std::set<Enemy*> mEnemies;
+        int     spawnTime = ENEMY_SPAWN;
+        int     mTime  = 0;
+        int     mScore = 0;
 };
 
 
