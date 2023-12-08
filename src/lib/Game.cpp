@@ -4,7 +4,6 @@
 
 Game::Game(){
     mPlayer = new Player(0,0,M_PI/2);
-    spawnEnemies(INIT_ENEMIES);
 }
 
 
@@ -71,13 +70,32 @@ void Game::moveProjs(){
 
 void Game::moveEnemies(){
     for (Enemy* cEnemy : mEnemies){
-        float xDisp = mPlayer->mX - cEnemy->mX;
-        float yDisp = mPlayer->mY - cEnemy->mY;
+        float xVec = mPlayer->mX - cEnemy->mX;
+        float yVec = mPlayer->mY - cEnemy->mY;
+
+        for(Enemy* cOther : mEnemies){
+            if(cEnemy == cOther){
+                // skip interaction with self
+                continue;
+            }
+
+            float xDisp = cOther->mX - cEnemy->mX;
+            float yDisp = cOther->mY - cEnemy->mY;
+            float dist  = std::sqrt(xDisp * xDisp + yDisp * yDisp);
+            xDisp /= dist;
+            yDisp /= dist;
+
+            float repulsion = REPEL_MULT / (std::pow(REPEL_RNG_MULT * dist, 2) + REPEL_RNG);
+            xVec -= xDisp * repulsion;
+            yVec -= yDisp * repulsion;
+        }
+
+
         float angle = 0;
-        if(xDisp > 0){
-            angle = std::atan(yDisp / xDisp);
+        if(xVec > 0){
+            angle = std::atan(yVec / xVec);
         } else {
-            angle = M_PI + std::atan(yDisp / xDisp);
+            angle = M_PI + std::atan(yVec / xVec);
         }
         cEnemy->rotState = fmod(angle + 2*M_PI, 2*M_PI);
         cEnemy->moveForward();
@@ -154,10 +172,16 @@ void Game::updateEntities(){
 
     killOB();
 
-    spawnTime -= DELTA_TIME;
-    if(spawnTime <= 0){
-        spawnTime = ENEMY_SPAWN;
-        spawnEnemies(1);
+    spawnTime += DELTA_TIME;
+    if(maxSpawnTime > SPAWN_MINTIME){
+        maxSpawnTime -= DELTA_TIME * SPAWN_DECAYTIME;
+    }
+    else{
+        maxSpawnTime = SPAWN_MINTIME;
+    }
+    if(spawnTime >= maxSpawnTime){
+        spawnTime = 0;
+        spawnEnemies(ENEMY_COUNT);
     }
 }
 
@@ -213,20 +237,20 @@ void Game::killOB(){
 void Game::spawnEnemies(size_t count){
     srand(time(nullptr));
     for(size_t i = 0; i < count; i++){
-        float r = 8 * static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float rLoc = 8 * float(rand()) / float(RAND_MAX);
         Enemy* cEnemy;
-
-        if(r >= 0.0f && r <= 2.0f){
-            cEnemy = new Enemy(1.0f - r, 1.0f, 0);
+        float rSpeed = (ENEMY_MAXMOVSPD-ENEMY_MINMOVSPD) * float(rand()) / float(RAND_MAX) + ENEMY_MINMOVSPD;
+        if(rLoc>= 0.0f && rLoc<= 2.0f){
+            cEnemy = new Enemy(1.0f - rLoc, 1.0f, 0, rSpeed);
         }
-        else if (r > 2.0f && r <= 4.0f){
-            cEnemy = new Enemy(1.0f, 1.0f - (r - 2.0f), 0);
+        else if (rLoc> 2.0f && rLoc<= 4.0f){
+            cEnemy = new Enemy(1.0f, 1.0f - (rLoc- 2.0f), 0, rSpeed);
         }
-        else if (r > 4.0f && r <= 6.0f){
-            cEnemy = new Enemy(1.0f - (r - 4.0f), -1.0f, 0);
+        else if (rLoc> 4.0f && rLoc<= 6.0f){
+            cEnemy = new Enemy(1.0f - (rLoc- 4.0f), -1.0f, 0, rSpeed);
         }
         else{
-            cEnemy = new Enemy(-1.0f, 1.0f - (r - 6.0f), 0);
+            cEnemy = new Enemy(-1.0f, 1.0f - (rLoc- 6.0f), 0, rSpeed);
         }
         mEnemies.insert(cEnemy);
     }

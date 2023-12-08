@@ -9,10 +9,9 @@
 #include <map>
 
 
-const int INIT_ENEMIES = 10; // Initial enemy count
 
 class Game {
-    
+
     public:
                 Game();
         void    updatePlay();
@@ -38,11 +37,12 @@ class Game {
         void    killOB();
         void    spawnEnemies(size_t count);
         void    endGame();
-        Player* mPlayer;
-        std::set<Enemy*> mEnemies;
-        int     spawnTime = ENEMY_SPAWN;
+        float   maxSpawnTime = SPAWN_MAXTIME; // Interval between enemy spawns
+        float   spawnTime = SPAWN_MAXTIME;
         int     mTime  = 0;
         int     mScore = 0;
+        Player* mPlayer;
+        std::set<Enemy*> mEnemies;
 };
 
 

@@ -70,9 +70,9 @@ class Player : public Entity {
 
 class Enemy : public Entity {
     public:
-                        Enemy(float x, float y, float rot) : Entity(x, y, rot){
+                        Enemy(float x, float y, float rot, float speed) : Entity(x, y, rot){
                             mSize   = ENEMY_SIZE;
-                            mSpeed  = ENEMY_MOVSPD;
+                            mSpeed  = speed;
                             mHealth = ENEMY_HP;
                         }
         virtual         ~Enemy(){};

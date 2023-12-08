@@ -30,4 +30,4 @@ Entity.o: lib/Entity.cpp lib/Entity.h lib/Constants.h
 
 
 clean:
-	rm *.o lib/*.gch Prog
+	rm *.o lib/*.gch Prog Prog_OSX
