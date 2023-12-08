@@ -5,7 +5,7 @@ This game is a survival colosseum game. The object is to survive as long as poss
 ### Compiling
 - Make your way to the `src/` directoy.
 - Run `make Prog` (or `make Prog_OSX` for MacOS) to compile the Colosseum game.
-- Run `./Prog` (or `make Proh_OSX`) to begin the game and enjoy.
+- Run `./Prog` (or `./Prog_OSX`) to begin the game and enjoy.
 - Simply close the game window to stop the game or play until you die and press `[space]`.
 
 ### Controls
